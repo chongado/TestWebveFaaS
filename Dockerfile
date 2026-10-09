@@ -1,17 +1,19 @@
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /opt/application
 
 ENV NODE_ENV=production
+ENV PORT=8000
 
 COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY server.js ./
 COPY public ./public
+COPY run.sh ./
 
-EXPOSE 3000
+RUN chmod 755 /opt/application/run.sh
 
-USER node
+EXPOSE 8000
 
-CMD ["npm", "start"]
+CMD ["/opt/application/run.sh"]
